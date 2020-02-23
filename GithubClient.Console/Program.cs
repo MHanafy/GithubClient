@@ -98,6 +98,11 @@ namespace GithubClient.Console
 
             System.Console.WriteLine($"CheckRun Id: {run.Id} Name: {run.Name} Status: {run.Status} Conclusion: {run.Conclusion} Output: {run.Output.Title}");
 
+            ////To issue a raw request, use Execute
+            //var url = $"https://api.github.com/app/installations";
+            //var payload = $"";
+            //var result = await client.Execute(System.Net.Http.HttpMethod.Get, url, token, payload);
+
 
             //// ****** Uncomment below code to submit a new checkrun
             //var checkRun = new CheckRun("Some fancy checkrun name", pull.Head.Sha, CheckRun.RunStatus.InProgress)
