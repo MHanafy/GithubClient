@@ -5,13 +5,13 @@ namespace MHanafy.GithubClient.Models.Github
     public class DetailedPullRequest : PullRequest
     {
         [JsonProperty("merged")]
-        public bool Merged { get; set; }
+        public bool? Merged { get; set; }
 
         [JsonProperty("mergeable")]
         public bool? Mergeable { get; set; }
 
         [JsonProperty("rebaseable")]
-        public bool Rebaseable { get; set; }
+        public bool? Rebaseable { get; set; }
 
         [JsonProperty("mergeable_state")]
         public string MergeableState { get; set; }

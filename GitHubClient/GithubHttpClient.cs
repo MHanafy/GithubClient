@@ -69,6 +69,12 @@ namespace MHanafy.GithubClient
             return result;
         }
 
+        public async Task ClosePullRequest(InstallationToken token, string repo, long pullNumber)
+        {
+            var url = $"{Base}repos/{token.Account}/{repo}/pulls/{pullNumber}";
+            await Execute(HttpMethod.Patch, url, token, $"{{\"state\": \"{PullRequest.PullStatus.Closed}\"}}");
+        }
+
         public async Task<List<Review>> GetReviews(InstallationToken token, string repo, long pullNumber)
         {
             var url = $"{Base}repos/{token.Account}/{repo}/pulls/{pullNumber}/reviews";
@@ -117,8 +123,12 @@ namespace MHanafy.GithubClient
             var message = await GetMessage(method, uri, token);
             if (payload != null) message.Content = new StringContent(payload, Encoding.UTF8, "application/json");
             var response = await _client.SendAsync(message);
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsStringAsync();
+            var content = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpRequestException($"Got a {response.StatusCode}, response body: '{content}'");
+            }
+            return content;
         }
 
         private async Task<HttpRequestMessage> GetMessage(HttpMethod method, string uri, InstallationToken token = null)

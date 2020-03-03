@@ -17,6 +17,7 @@ namespace MHanafy.GithubClient
         Task<List<Installation>> GetInstallations();
         Task<InstallationToken> GetInstallationToken(long installationId);
         Task<DetailedPullRequest> GetPullRequest(InstallationToken token, string repo, long pullNumber);
+        Task ClosePullRequest(InstallationToken token, string repo, long pullNumber);
         Task<List<PullRequest>> GetPullRequests(InstallationToken token, string repo);
         Task<List<Repository>> GetRepositories(InstallationToken token);
         Task<List<Review>> GetReviews(InstallationToken token, string repo, long pullNumber);

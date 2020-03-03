@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using MHanafy.GithubClient;
 using MHanafy.GithubClient.Models;
-using MHanafy.GithubClient.Models.Github;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;

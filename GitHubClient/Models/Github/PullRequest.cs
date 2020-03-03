@@ -8,6 +8,7 @@ namespace MHanafy.GithubClient.Models.Github
         public static class PullStatus
         {
             public const string Open = "open";
+            public const string Closed = "closed";
         }
 
         [JsonProperty("url")]
