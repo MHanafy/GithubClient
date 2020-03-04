@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace MHanafy.GithubClient.Models.Github
@@ -14,5 +15,7 @@ namespace MHanafy.GithubClient.Models.Github
         [JsonProperty("output", NullValueHandling = NullValueHandling.Ignore)]
         public CheckRunOutput Output { get; set; }
 
+        [JsonProperty("actions", NullValueHandling = NullValueHandling.Ignore)]
+        public List<Action> Actions { get; set; }
     }
 }

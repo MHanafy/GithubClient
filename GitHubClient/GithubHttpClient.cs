@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MHanafy.GithubClient.Models;
 using MHanafy.GithubClient.Models.Github;
 using Newtonsoft.Json;
+using Action = MHanafy.GithubClient.Models.Github.Action;
 
 namespace MHanafy.GithubClient
 {
@@ -90,10 +91,10 @@ namespace MHanafy.GithubClient
         }
 
         public async Task UpdateCheckRun(InstallationToken token, string repo, long checkRunId, string status,
-            string conclusion, CheckRunOutput output, DateTime? completeDate = null)
+            string conclusion, CheckRunOutput output, DateTime? completeDate = null, List<Action> actions = null)
         {
             var url = $"{Base}repos/{token.Account}/{repo}/check-runs/{checkRunId}";
-            var payload = new CheckRunUpdate { Status = status, Conclusion = conclusion, Output = output };
+            var payload = new CheckRunUpdate { Status = status, Conclusion = conclusion, Output = output, Actions = actions};
             if (completeDate != null) payload.CompletedAt = completeDate.Value.ToUniversalTime();
             await Execute<CheckRun>(HttpMethod.Patch, url, token, JsonConvert.SerializeObject(payload));
         }

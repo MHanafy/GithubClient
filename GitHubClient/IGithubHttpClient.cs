@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Action = MHanafy.GithubClient.Models.Github.Action;
 
 namespace MHanafy.GithubClient
 {
@@ -23,6 +24,8 @@ namespace MHanafy.GithubClient
         Task<List<Review>> GetReviews(InstallationToken token, string repo, long pullNumber);
         Task<DetailedUser> GetUser(InstallationToken token, string login);
         Task<CheckRun> SubmitCheckRun(InstallationToken token, string repo, CheckRun checkRun);
-        Task UpdateCheckRun(InstallationToken token, string repo, long checkRunId, string status, string conclusion, CheckRunOutput output, DateTime? completeDate = null);
+
+        Task UpdateCheckRun(InstallationToken token, string repo, long checkRunId, string status, string conclusion,
+            CheckRunOutput output, DateTime? completeDate = null, List<Action> actions = null);
     }
 }
