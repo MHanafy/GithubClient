@@ -9,7 +9,7 @@ namespace MHanafy.GithubClient.Models.Github
         public long Id { get; set; }
 
         [JsonProperty("account")]
-        public Account Account { get; set; }
+        public IAccount Account { get; set; }
 
         [JsonProperty("repository_selection")]
         public string RepositorySelection { get; set; }

@@ -2,12 +2,22 @@
 
 namespace MHanafy.GithubClient.Models
 {
-    public class InstallationToken
+    public interface IInstallationToken
     {
-        public readonly long InstallationId;
-        public readonly string Account;
-        public readonly string Token;
-        public readonly DateTime Expiry;
+        long InstallationId { get; }
+        string Account { get; }
+        string Token { get; }
+        DateTime Expiry { get; }
+        bool IsValid { get; }
+    }
+
+    public class InstallationToken : IInstallationToken
+    {
+        public long InstallationId { get; }
+
+        public string Account { get; }
+        public string Token{ get; }
+        public DateTime Expiry{ get; }
 
         public InstallationToken(long installationId, string account, string token, DateTime expiry)
         {

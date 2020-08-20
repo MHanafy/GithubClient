@@ -36,61 +36,61 @@ namespace MHanafy.GithubClient
             return await Execute<Installation>(HttpMethod.Get, $"{Base}app/installations/{installationId}");
         }
 
-        public async Task<InstallationToken> GetInstallationToken(long installationId)
+        public async Task<IInstallationToken> GetInstallationToken(long installationId)
         {
             var installation = await GetInstallation(installationId);
             var accessToken = await Execute<AccessToken>(HttpMethod.Post, $"{Base}app/installations/{installationId}/access_tokens");
             return new InstallationToken(installationId, installation.Account.Login, accessToken.Token, accessToken.ExpiresAt);
         }
 
-        public async Task<List<Repository>> GetRepositories(InstallationToken token)
+        public async Task<List<Repository>> GetRepositories(IInstallationToken token)
         {
             var result = await Execute<InstallationRepositories>(HttpMethod.Get, $"{Base}installation/repositories", token);
             return result.Repositories;
         }
 
-        public async Task<List<CheckSuite>> GetCheckSuites(InstallationToken token, string repo, string commit)
+        public async Task<List<CheckSuite>> GetCheckSuites(IInstallationToken token, string repo, string commit)
         {
             var url = $"{Base}repos/{token.Account}/{repo}/commits/{commit}/check-suites";
             var result = await Execute<CommitCheckSuites>(HttpMethod.Get, url, token);
             return result.CheckSuites;
         }
 
-        public async Task<List<PullRequest>> GetPullRequests(InstallationToken token, string repo)
+        public async Task<List<PullRequest>> GetPullRequests(IInstallationToken token, string repo)
         {
             var url = $"{Base}repos/{token.Account}/{repo}/pulls";
             var result = await Execute<List<PullRequest>>(HttpMethod.Get, url, token);
             return result;
         }
 
-        public async Task<DetailedPullRequest> GetPullRequest(InstallationToken token, string repo, long pullNumber)
+        public async Task<DetailedPullRequest> GetPullRequest(IInstallationToken token, string repo, long pullNumber)
         {
             var url = $"{Base}repos/{token.Account}/{repo}/pulls/{pullNumber}";
             var result = await Execute<DetailedPullRequest>(HttpMethod.Get, url, token);
             return result;
         }
 
-        public async Task ClosePullRequest(InstallationToken token, string repo, long pullNumber)
+        public async Task ClosePullRequest(IInstallationToken token, string repo, long pullNumber)
         {
             var url = $"{Base}repos/{token.Account}/{repo}/pulls/{pullNumber}";
             await Execute(HttpMethod.Patch, url, token, $"{{\"state\": \"{PullRequest.PullStatus.Closed}\"}}");
         }
 
-        public async Task<List<Review>> GetReviews(InstallationToken token, string repo, long pullNumber)
+        public async Task<List<Review>> GetReviews(IInstallationToken token, string repo, long pullNumber)
         {
             var url = $"{Base}repos/{token.Account}/{repo}/pulls/{pullNumber}/reviews";
             var result = await Execute<List<Review>>(HttpMethod.Get, url, token);
             return result;
         }
 
-        public async Task<CheckRun> SubmitCheckRun(InstallationToken token, string repo, CheckRun checkRun)
+        public async Task<CheckRun> SubmitCheckRun(IInstallationToken token, string repo, CheckRun checkRun)
         {
             var url = $"{Base}repos/{token.Account}/{repo}/check-runs";
             var output = await Execute<CheckRun>(HttpMethod.Post, url, token, JsonConvert.SerializeObject(checkRun));
             return output;
         }
 
-        public async Task UpdateCheckRun(InstallationToken token, string repo, long checkRunId, string status,
+        public async Task UpdateCheckRun(IInstallationToken token, string repo, long checkRunId, string status,
             string conclusion, CheckRunOutput output, DateTime? completeDate = null, List<Action> actions = null)
         {
             var url = $"{Base}repos/{token.Account}/{repo}/check-runs/{checkRunId}";
@@ -99,27 +99,27 @@ namespace MHanafy.GithubClient
             await Execute<CheckRun>(HttpMethod.Patch, url, token, JsonConvert.SerializeObject(payload));
         }
 
-        public async Task<DetailedUser> GetUser(InstallationToken token, string login)
+        public async Task<DetailedUser> GetUser(IInstallationToken token, string login)
         {
             var url = $"{Base}users/{login}";
             var result = await Execute<DetailedUser>(HttpMethod.Get, url, token);
             return result;
         }
 
-        public async Task<List<CheckRun>> GetCheckRuns(InstallationToken token, string repo, long checkSuiteId)
+        public async Task<List<CheckRun>> GetCheckRuns(IInstallationToken token, string repo, long checkSuiteId)
         {
             var url = $"{Base}repos/{token.Account}/{repo}/check-suites/{checkSuiteId}/check-runs";
             var result = await Execute<CommitCheckRuns>(HttpMethod.Get, url, token);
             return result.CheckRuns;
         }
 
-        private async Task<T> Execute<T>(HttpMethod method, string uri, InstallationToken token = null, string payload = null)
+        private async Task<T> Execute<T>(HttpMethod method, string uri, IInstallationToken token = null, string payload = null)
         {
             var response = await Execute(method, uri, token, payload);
             return JsonConvert.DeserializeObject<T>(response);
         }
 
-        public async Task<string> Execute(HttpMethod method, string uri, InstallationToken token = null, string payload = null)
+        public async Task<string> Execute(HttpMethod method, string uri, IInstallationToken token = null, string payload = null)
         {
             var message = await GetMessage(method, uri, token);
             if (payload != null) message.Content = new StringContent(payload, Encoding.UTF8, "application/json");
@@ -132,7 +132,7 @@ namespace MHanafy.GithubClient
             return content;
         }
 
-        private async Task<HttpRequestMessage> GetMessage(HttpMethod method, string uri, InstallationToken token = null)
+        private async Task<HttpRequestMessage> GetMessage(HttpMethod method, string uri, IInstallationToken token = null)
         {
             var message = new HttpRequestMessage(method, uri);
             message.Headers.Add("Accept", "application/vnd.github.machine-man-preview+json");

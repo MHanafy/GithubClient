@@ -3,7 +3,15 @@ using Newtonsoft.Json;
 
 namespace MHanafy.GithubClient.Models.Github
 {
-    public class AccessToken
+    public interface IAccessToken
+    {
+        string Token { get; set; }
+        DateTime ExpiresAt { get; set; }
+        Permission Permissions { get; set; }
+        string RepositorySelection { get; set; }
+    }
+
+    public class AccessToken : IAccessToken
     {
         [JsonProperty("token")]
         public string Token { get; set; }

@@ -3,7 +3,29 @@ using Newtonsoft.Json;
 
 namespace MHanafy.GithubClient.Models.Github
 {
-    public class Account
+    public interface IAccount
+    {
+        string Login { get; set; }
+        long Id { get; set; }
+        string NodeId { get; set; }
+        Uri AvatarUrl { get; set; }
+        string GravatarId { get; set; }
+        Uri Url { get; set; }
+        Uri HtmlUrl { get; set; }
+        Uri FollowersUrl { get; set; }
+        string FollowingUrl { get; set; }
+        string GistsUrl { get; set; }
+        string StarredUrl { get; set; }
+        Uri SubscriptionsUrl { get; set; }
+        Uri OrganizationsUrl { get; set; }
+        Uri ReposUrl { get; set; }
+        string EventsUrl { get; set; }
+        Uri ReceivedEventsUrl { get; set; }
+        string Type { get; set; }
+        bool SiteAdmin { get; set; }
+    }
+
+    public class Account : IAccount
     {
         [JsonProperty("login")]
         public string Login { get; set; }
