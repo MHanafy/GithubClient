@@ -134,10 +134,10 @@ namespace MHanafy.GithubClient
 
         private async Task<HttpRequestMessage> GetMessage(HttpMethod method, string uri, InstallationToken token = null)
         {
-            var message = new HttpRequestMessage(method, uri);
+            var message = new HttpRequestMessage(method, $"{uri}?per_page=100");
             message.Headers.Add("Accept", "application/vnd.github.machine-man-preview+json");
             message.Headers.Add("Accept", "application/vnd.github.antiope-preview+json");
-            message.Headers.Add("User-Agent", "MhanafyTest");
+            message.Headers.Add("User-Agent", "Mhanafy-GithubClient");
             if (token != null)
             {
                 if (!token.IsValid)
